@@ -104,9 +104,12 @@ def get_sheet_name(sheet):
         return m
 
 def get_summary(keywords,ocaseid):
-
+        
+        #取第一个_后的所有内容
         #caseid =("_").join(ocaseid.split("_")[1:])
         #return keywords+"_"+caseid
+
+        #只取第一个_到第二个_中间的内容
         return keywords+"_"+get_after(ocaseid)
         
                 
@@ -172,9 +175,9 @@ for sheet in sheetlist:
                         row += 1
                         worksheet.write_row(row,0,(caseid,importance,1,keywords,summary,'',combine,expectRS,1,""))
         print("Sheet名称:%s" %sheet)  
-        print("含有属性items_rs:%s"% items_rs)
-        print("类型区间rs_dct：%s"% rs_dct)
-        print("rskey: %s" %rs_key)
+        print("含有类型:%s"% items_rs)#items_rs
+        print("类型区间：%s"% rs_dct) #rs_dct
+        print("类型详情: %s" %rs_key)#rekey
         print("\n")
 
      
