@@ -106,11 +106,11 @@ def get_sheet_name(sheet):
 def get_summary(keywords,ocaseid):
         
         #取第一个_后的所有内容
-        #caseid =("_").join(ocaseid.split("_")[1:])
-        #return keywords+"_"+caseid
+        caseid =("_").join(ocaseid.split("_")[1:])
+        return keywords+"_"+caseid
 
         #只取第一个_到第二个_中间的内容
-        return keywords+"_"+get_after(ocaseid)
+        #return keywords+"_"+get_after(ocaseid)
         
                 
 
