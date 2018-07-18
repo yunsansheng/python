@@ -4,7 +4,7 @@ import json
 import xlrd
 import re
 import ast
-
+import collections
 
 
 #定义常量
@@ -211,7 +211,8 @@ def parse_body(bodykey,bodyvalue,param):
         
         body={}  
         body["mode"]="raw"
-        dctbody=dict(zip(bodykey,bodyvalue))
+        dctbody=collections.OrderedDict(zip(bodykey,bodyvalue))
+
         '''
         if len(dctbody) !=0:
                 bodyraw={}
@@ -235,14 +236,16 @@ def parse_body(bodykey,bodyvalue,param):
                         bodyraw={}
                         bodyraw["data"]={}
                         #print(param)
-                        bodydict=ast.literal_eval(param)
+                        bodydict=collections.OrderedDict(ast.literal_eval(param))
+                        
+
                         for i in dctbody:
                                 up_dict(bodydict,i,dctbody[i])
                         
-                        body["raw"]=json.dumps(bodydict,indent=4)
+                        body["raw"]=json.dumps(bodydict,indent=4,ensure_ascii=False)
                 else:
                         bodydict=ast.literal_eval(param)
-                        body["raw"]=json.dumps(bodydict,indent=4)
+                        body["raw"]=json.dumps(bodydict,indent=4,ensure_ascii=False)
                 #print(body["raw"])
                 
         else:
@@ -251,7 +254,10 @@ def parse_body(bodykey,bodyvalue,param):
                         bodyraw["data"]={}
                         for i in dctbody:
                                 bodyraw["data"][i]= dctbody[i]
-                        body["raw"]=json.dumps(bodyraw,indent=4)
+                        #print(bodyraw)
+                        
+                        body["raw"]=json.dumps(bodyraw,indent=4,ensure_ascii=False)
+
                 else:
                      body["raw"]=""   
         
