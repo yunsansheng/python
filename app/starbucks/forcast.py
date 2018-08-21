@@ -3,6 +3,9 @@ import xlrd
 
 worker_col ='AB'
 percent_col ='AC'
+filename='Rolling forecast Q2&Q3_Kaishen_0820.xlsx'
+sheetname ='Domestic'
+
 showall =False
 
 def col_index(col):
@@ -13,46 +16,41 @@ def col_index(col):
 	else:
 		raise Exception("length of col must be 1 or 2",col)
 
-wb =xlrd.open_workbook("Rolling forecast Q2&Q3_Kaishen_0820.xlsx")
-sheet = wb.sheet_by_name("Domestic")
 
-maxrow = sheet.nrows
+def parse_data(worker_col,percent_col,showall):
+	wb =xlrd.open_workbook(filename)
+	sheet = wb.sheet_by_name(sheetname)
 
+	# parse col_worker, and worker_set
+	col_worker=sheet.col_values(col_index(worker_col))[2:]
+	worker_set =set(col_worker)
+	worker_set.remove('') 
+	out_dict={}
+	for i in worker_set:
+		out_dict[i]=0
 
- 
-col_worker=sheet.col_values(col_index(worker_col))[2:]
-worker_set =set(col_worker)
-worker_set.remove('') 
-#print(len(col_worker))
-#create a dict
-out_dict={}
-for i in worker_set:
-	out_dict[i]=0
+	# parse effort row
+	col_effort =sheet.col_values(col_index(percent_col))[2:]
 
-#print(out_dict)
+	# parse data
+	data= list(zip(col_worker,col_effort))
 
-col_effort =sheet.col_values(col_index(percent_col))[2:]
-#print(len(col_effort))
+	for item in data:
+		if item[0] in worker_set:
+			out_dict[item[0]]=out_dict[item[0]]+float(item[1])
 
-data= list(zip(col_worker,col_effort))
+	# output data
+	for k,v in out_dict.items():
+		if showall == False:
+			if v !=1:
+				print(k,v)
 
-for item in data:
-	if item[0] in worker_set:
-		out_dict[item[0]]=out_dict[item[0]]+float(item[1])
-	
-
-#print(out_dict)
-
-for k,v in out_dict.items():
-	if showall == False:
-		if v !=1:
+		else:
 			print(k,v)
 
-	else:
-		print(k,v)
 
 
-
+parse_data('AB','AC',True)
 
 
 
